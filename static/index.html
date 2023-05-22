@@ -1,0 +1,21 @@
+<html>
+	<head>
+		<base href="./" />
+		<script src="/jquery.min.js"></script>
+		<link rel="stylesheet" href="/jquery.mobile-git.css"/>
+		<script type="text/javascript">
+			$(function(){ 
+				$("#btn_endfed").on( "click", function() {
+					$.get('/sw?port=2');
+				});
+				$("#btn_g5rv").on( "click", function() {
+					$.get('/sw?port=3');
+				});
+			}); 
+		</script>
+	</head>
+	<body>
+		<button class="ui-btn" id="btn_endfed">EndFed HW</button>
+		<button class="ui-btn" id="btn_g5rv">G5RV</button>
+	</body>
+</html>
