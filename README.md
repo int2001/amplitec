@@ -6,7 +6,9 @@ Pre-Alpha.
 
 ## Install
 `git clone [repo-url]`
+
 `cd amplitec_src`
+
 `npm install`
 
 * customize ttyPort at index.js
