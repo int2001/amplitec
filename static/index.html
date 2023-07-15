@@ -5,17 +5,41 @@
 		<link rel="stylesheet" href="/jquery.mobile-git.css"/>
 		<script type="text/javascript">
 			$(function(){ 
-				$("#btn_endfed").on( "click", function() {
-					$.get('/sw?port=2');
+				$(".aswitch").on( "click", function() {
+					$.get('/sw?port='+this.id.substr(4,1));
 				});
-				$("#btn_g5rv").on( "click", function() {
-					$.get('/sw?port=3');
-				});
+			
+				const iid=setInterval(get_active_ant, 250);
+
+				function get_active_ant() {
+					$.ajax({
+						url: "/ant", cache: false, dataType: "json"
+					}).done(function( answer ) {
+						$(".aswitch").each(function(i,ele) {
+							if (ele.id.substr(4,1) == answer.antenna) {
+								$(ele).addClass('active');
+							} else {
+								$(ele).removeClass('active');
+							}
+						});
+					});
+				}
 			}); 
 		</script>
+		<style>
+		.active {
+  			background-color: #fefbd8;
+		}
+		</style>
 	</head>
 	<body>
-		<button class="ui-btn" id="btn_endfed">EndFed HW</button>
-		<button class="ui-btn" id="btn_g5rv">G5RV</button>
+		<button class="ui-btn aswitch" id="btn_1">Antenna 1</button>
+		<button class="ui-btn aswitch" id="btn_2">Antenna 2</button>
+		<button class="ui-btn aswitch" id="btn_3">Antenna 3</button>
+		<button class="ui-btn aswitch" id="btn_4">Antenna 4</button>
+		<button class="ui-btn aswitch" id="btn_5">Antenna 5</button>
+		<button class="ui-btn aswitch" id="btn_6">Antenna 6</button>
+		<button class="ui-btn aswitch" id="btn_7">Antenna 7</button>
+		<button class="ui-btn aswitch" id="btn_8">Antenna 8</button>
 	</body>
 </html>
