@@ -2,6 +2,7 @@
 const express=require('express');
 const app=express();
 const { SerialPort } = require('serialport');
+var antenna=0;
 var port = new SerialPort(
 	{
 		path: "/dev/ttyACM0",
@@ -37,17 +38,27 @@ const switch_it = (tport) => {
 
 app.use("/",express.static('static'));
 
+app.get('/ant', asyncHandler(async (req, res) => {
+	ret='{"antenna":'+antenna+'}';
+	res.send(ret);
+}));
+
 app.get('/sw', asyncHandler(async (req, res) => {
-	console.log("Got "+req.query.port+" as Target");
 	const rret=await switch_it(req.query.port);
-	console.log("RRet:"+rret);
 	res.send(rret);
 }));
 
-port.on("data", (line) => {
-	console.log("data from tty recvd: "+line.toString());
+var buffer = '';
+port.on('data', function(chunk) {
+	buffer += chunk;
+	var answers = buffer.split(/\r?\n/); // Split data by new line character or smth-else
+		buffer = answers.pop(); // Store unfinished data
+
+	if (answers.length > 0) {
+		antenna=(answers[0].substr(answers[0].indexOf("R=")+2,1));
+	}
 });
 
 app.listen(8070, () => {
-        console.log('listener started');
+        console.log('listener started at port 8070');
 });
